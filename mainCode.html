@@ -1,0 +1,389 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIME TABLE GENERATOR  </title>
+    <style>
+        body {
+            background-color: rgb(175, 236, 216);
+            /* background-image: url(https://source.unsplash.com/WLUHO9A_xik/1600x900); */
+        }
+        
+        .header {
+            text-align: center;
+            margin: 10px;
+        }
+        
+        .title {
+            width: 150px;
+            padding: 5px;
+            margin: 0;
+            font-size: medium;
+            margin-right: 10px;
+        }
+        
+        .input {
+            padding: 5px;
+            margin: 0;
+            margin-right: 10px;
+            font-size: medium;
+            font-family: 'Teko', sans-serif;
+        }
+        
+        .name {
+            margin: 10px;
+            padding: 10px;
+            margin-bottom: 0;
+            display: flex;
+            font-family: 'Teko', sans-serif;
+        }
+        
+        .subject {
+            margin: 10px;
+            padding: 10px;
+            margin-top: 0;
+            display: flex;
+            font-family: 'Teko', sans-serif;
+        }
+        
+        .submit {
+            padding: 5;
+            margin: 10;
+            border-radius: 20;
+        }
+        
+        .table {
+            width: 98%;
+            margin: 1%;
+            text-align: center;
+            border: 1px solid black;
+        }
+        
+        .cell {
+            padding: 10px;
+            margin: 0;
+            border: 1px solid black;
+        }
+    </style>
+
+    <script type="text/javascript">
+        TT = []
+
+        function getTT() {
+
+            BREAK = ['B', 'R', 'E', 'A', 'K']
+
+            faculty_sem4 = []
+            subject_sem4 = []
+            pr_faculty_sem4 = []
+            pr_subject_sem4 = []
+
+            faculty_sem6 = []
+            subject_sem6 = []
+            pr_faculty_sem6 = []
+            pr_subject_sem6 = []
+
+            faculty_sem8 = []
+            subject_sem8 = []
+            pr_faculty_sem8 = []
+            pr_subject_sem8 = []
+
+            for (i = 0; i < 5; i++) {
+                faculty_sem4.push(document.getElementsByClassName('input')[i + 0].value)
+                subject_sem4.push(document.getElementsByClassName('input')[i + 5].value)
+
+                faculty_sem6.push(document.getElementsByClassName('input')[i + 0].value)
+                subject_sem6.push(document.getElementsByClassName('input')[i + 10].value)
+
+                faculty_sem8.push(document.getElementsByClassName('input')[i + 0].value)
+                subject_sem8.push(document.getElementsByClassName('input')[i + 15].value)
+
+                pr_faculty_sem4.push(document.getElementsByClassName('input')[i + 20].value)
+                pr_subject_sem4.push(document.getElementsByClassName('input')[i + 25].value)
+
+                pr_faculty_sem6.push(document.getElementsByClassName('input')[i + 30].value)
+                pr_subject_sem6.push(document.getElementsByClassName('input')[i + 35].value)
+
+                pr_faculty_sem8.push(document.getElementsByClassName('input')[i + 40].value)
+                pr_subject_sem8.push(document.getElementsByClassName('input')[i + 45].value)
+            }
+
+
+            data = {
+                "faculty_sem4": faculty_sem4,
+                "subject_sem4": subject_sem4,
+                "faculty_sem6": faculty_sem6,
+                "subject_sem6": subject_sem6,
+                "faculty_sem8": faculty_sem8,
+                "subject_sem8": subject_sem8,
+                "pr_faculty_sem4": pr_faculty_sem4,
+                "pr_subject_sem4": pr_subject_sem4,
+                "pr_faculty_sem6": pr_faculty_sem6,
+                "pr_subject_sem6": pr_subject_sem6,
+                "pr_faculty_sem8": pr_faculty_sem8,
+                "pr_subject_sem8": pr_subject_sem8
+            }
+
+            fetch("http://127.0.0.1:5000/TT", {
+                method: "POST",
+                body: JSON.stringify(data)
+            }).then(res => {
+                res.text().then(data => {
+                    TT = JSON.parse(data)
+                    showTT(TT)
+                })
+            })
+
+        }
+
+        function showTT(TT) {
+            document.getElementsByClassName('data')[0].style.display = "none"
+            document.getElementsByClassName('output')[0].style.display = "block"
+
+            for (i = 0; i < TT.length; i++) {
+                for (j = 0; j < TT[i].length; j++) {
+                    for (k = 0; k <= TT[i][j].length; k++) {
+                        if (k == 4) {
+                            document.getElementById(i.toString() + j.toString() + k.toString()).innerText = BREAK[j]
+                        }
+                        if (k < 4) {
+                            document.getElementById(i.toString() + j.toString() + k.toString()).innerText = TT[i][j][k]
+                        }
+                        if (k > 4) {
+                            document.getElementById(i.toString() + j.toString() + k.toString()).innerText = TT[i][j][k - 1]
+                        }
+                    }
+                }
+            }
+        }
+
+        function back() {
+            for (i = 0; i < 3; i++) {
+                for (j = 0; j < 5; j++) {
+                    for (k = 0; k < 8; k++) {
+                        document.getElementById(i.toString() + j.toString() + k.toString()).innerText = '-'
+                    }
+                }
+            }
+            document.getElementsByClassName('data')[0].style.display = 'block'
+            document.getElementsByClassName('output')[0].style.display = 'none'
+        }
+    </script>
+
+</head>
+
+
+
+<body>
+    <h1 class="header">TIME TABLE GENERATOR </h1>
+    <h3 class="header">Maharashtra College Of Arts, Science and Commerce</h3>
+    <div class="data">
+        <div class="lecture">
+            <h2 class="header">FOR LECTURES</h2>
+            <div class="name">
+                <p class="title"> Name of Teacher : </p>
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+            </div>
+            <div class="subject">
+                <p class="title"> Lecture Sem 2: </p>
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+            </div>
+            <div class="subject">
+                <p class="title"> Lecture Sem 4 : </p>
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+            </div>
+            <div class="subject">
+                <p class="title"> Lecture Sem 6 : </p>
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+            </div>
+            <h2 class="header">FOR SEM 2 PRACTICALS</h2>
+            <div class="name">
+                <p class="title"> Name of Teacher : </p>
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+            </div>
+            <div class="subject">
+                <p class="title"> Practical : </p>
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+            </div>
+            <h2 class="header">FOR SEM 4 PRACTICALS</h2>
+            <div class="name">
+                <p class="title"> Name of Teacher : </p>
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+            </div>
+            <div class="subject">
+                <p class="title"> Practical : </p>
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+            </div>
+            <h2 class="header">FOR SEM 6 PRACTICALS</h2>
+            <div class="name">
+                <p class="title"> Name of Teacher : </p>
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+            </div>
+            <div class="subject">
+                <p class="title"> Practical : </p>
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+                <input type="text" class="input">
+            </div>
+        </div>
+        <center>
+            <button onclick="getTT()"> Get Time Table</button>
+        </center>
+    </div>
+
+    <div class="output">
+        <div class="sem4">
+            <h1 class="header">FOR SEM 2</h1>
+            <table class="table">
+                <tr>
+                    <th class="cell">Days</th>
+                    <th class="cell">7:00 - 7:50</th>
+                    <th class="cell">7:50 - 8:40</th>
+                    <th class="cell">8:40- 9:30</th>
+                    <th class="cell">9:30 - 10:20</th>
+                    <th class="cell">10:20- 11:10</th>
+                    <th class="cell">11:10 - 12:00</th>
+                    <th class="cell">12:00 - 12:50</th>
+                </tr>
+                <tr id="s00">
+                    <th class="cell">Monday</th>
+                </tr>
+                <tr id="s01">
+                    <th class="cell">Tuesday</th>
+                </tr>
+                <tr id="s02">
+                    <th class="cell">Wednesday</th>
+                </tr>
+                <tr id="s03">
+                    <th class="cell">Thursday</th>
+                </tr>
+                <tr id="s04">
+                    <th class="cell">Friday</th>
+                </tr>
+            </table>
+        </div>
+        <div class="sem6">
+            <h1 class="header">FOR SEM 4</h1>
+            <table class="table">
+                <tr>
+                    <th class="cell">Days</th>
+                    <th class="cell">7:00 - 7:50</th>
+                    <th class="cell">7:50 - 8:40</th>
+                    <th class="cell">8:40 - 9:30</th>
+                    <th class="cell">9:30 - 10:20</th>
+                    <th class="cell">10:20 - 11:10</th>
+                    <th class="cell">11:10 - 12:00</th>
+                    <th class="cell">12:00 - 12:50</th>
+                </tr>
+                <tr id="s10">
+                    <th class="cell">Monday</th>
+                </tr>
+                <tr id="s11">
+                    <th class="cell">Tuesday</th>
+                </tr>
+                <tr id="s12">
+                    <th class="cell">Wednesday</th>
+                </tr>
+                <tr id="s13">
+                    <th class="cell">Thursday</th>
+                </tr>
+                <tr id="s14">
+                    <th class="cell">Friday</th>
+                </tr>
+            </table>
+        </div>
+        <div class="sem8">
+            <h1 class="header">FOR SEM 6</h1>
+            <table class="table">
+                <tr>
+                    <th class="cell">Days</th>
+                    <th class="cell">7:00 - 7:50</th>
+                    <th class="cell">7:50 - 8:40</th>
+                    <th class="cell">8:40 - 9:30</th>
+                    <th class="cell">9:30 - 10:20</th>
+                    <th class="cell">10:20 - 11:10</th>
+                    <th class="cell">11:10 - 12:00</th>
+                    <th class="cell">12:00 - 12:50</th>
+                </tr>
+                <tr id="s20">
+                    <th class="cell">Monday</th>
+                </tr>
+                <tr id="s21">
+                    <th class="cell">Tuesday</th>
+                </tr>
+                <tr id="s22">
+                    <th class="cell">Wednesday</th>
+                </tr>
+                <tr id="s23">
+                    <th class="cell">Thursday</th>
+                </tr>
+                <tr id="s24">
+                    <th class="cell">Friday</th>
+                </tr>
+            </table>
+        </div>
+
+        <center>
+            <button onclick="back()"> Go Back </button>
+        </center>
+    </div>
+
+</body>
+
+<script type="text/javascript">
+    document.getElementsByClassName('output')[0].style.display = 'none'
+
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 5; j++) {
+            for (k = 0; k < 8; k++) {
+                cell = document.createElement('td')
+                cell.className = 'cell'
+                cell.id = i.toString() + j.toString() + k.toString()
+                cell.innerText = '-'
+                document.getElementById("s" + i + j).appendChild(cell)
+            }
+        }
+    }
+</script>
+
+</html>
