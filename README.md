@@ -1,7 +1,6 @@
-**Automatic Timetable Generation System
+**Automatic Timetable Generation System**
 
-Project Overview:
-**
+**Project Overview**:
 
 The main objective of this project is to simplify the timetable generation process for educational institutions. The system automatically generates timetables for individual classes and staff, making the process faster and more efficient. The user-friendly interface allows users to easily view and manage the timetables, significantly improving workflow efficiency.
 
