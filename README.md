@@ -27,7 +27,9 @@ JavaScript
 **Compatible Platforms:**
 
 Windows
+
 Linux (64-bit and 32-bit)
+
 macOS
 
 **Outcome:**
